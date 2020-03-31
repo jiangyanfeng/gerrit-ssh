@@ -109,6 +109,9 @@ func (g *GerritSSH) sshConnection(command string, buffer *bytes.Buffer) (string,
 		Auth: []ssh.AuthMethod{
 			ssh.PublicKeys(signer),
 		},
+		HostKeyCallback: func(hostname string, remote net.Addr, key ssh.PublicKey) error {
+			return nil
+		},
 	}
 	// Dial TCP
 	conn, err := ssh.Dial("tcp", g.URL, config)
