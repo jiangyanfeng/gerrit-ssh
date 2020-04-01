@@ -3,10 +3,11 @@ package gerritssh
 import (
 	"bytes"
 	"encoding/json"
+	"golang.org/x/crypto/ssh"
 	"io/ioutil"
 	"log"
-
-	"golang.org/x/crypto/ssh"
+	"net"
+	"strings"
 )
 
 // New creates, and returns a new GerritESListener object. Its only argument
@@ -53,13 +54,22 @@ func (g *GerritSSH) StartStreamEvents() {
 		event := StreamEvent{}
 		for {
 			if buffer.Len() != 0 {
-				err := json.Unmarshal(buffer.Bytes(), &event)
-				if err == nil {
-					buffer.Reset()
-					if g.Debug {
-						log.Printf("Gerrit SSH: recived event: %v", event.Type)
+				messages := strings.Split(buffer.String(), "\n")
+				cnt := len(messages)
+				for i := 0; i < cnt; i++ {
+					err := json.Unmarshal([]byte(messages[i]), &event)
+					if err == nil {
+						if g.Debug {
+							log.Printf("Gerrit SSH: recived event: %v, message: %s", event.Type, messages[i])
+						}
+						g.ResultChan <- event
 					}
-					g.ResultChan <- event
+					if i < cnt-1 || (err == nil && cnt == 1){
+						buffer.Next(len(messages[i]))
+					}
+				}
+				if buffer.Len() == 0 {
+					buffer.Reset()
 				}
 			}
 			select {
