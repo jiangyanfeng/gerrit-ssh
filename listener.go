@@ -6,7 +6,6 @@ import (
 	"golang.org/x/crypto/ssh"
 	"io/ioutil"
 	"log"
-	"net"
 	"strings"
 )
 
@@ -64,7 +63,9 @@ func (g *GerritSSH) StartStreamEvents() {
 						}
 						g.ResultChan <- event
 					}
-					if i < cnt-1 || (err == nil && cnt == 1){
+					if i < cnt-1 {
+						buffer.Next(len(messages[i]) + 1)
+					} else if err == nil {
 						buffer.Next(len(messages[i]))
 					}
 				}
@@ -119,9 +120,7 @@ func (g *GerritSSH) sshConnection(command string, buffer *bytes.Buffer) (string,
 		Auth: []ssh.AuthMethod{
 			ssh.PublicKeys(signer),
 		},
-		HostKeyCallback: func(hostname string, remote net.Addr, key ssh.PublicKey) error {
-			return nil
-		},
+		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
 	}
 	// Dial TCP
 	conn, err := ssh.Dial("tcp", g.URL, config)
