@@ -52,7 +52,7 @@ func (g *GerritSSH) StartStreamEvents() {
 
 		event := StreamEvent{}
 		for {
-			if buffer.Len() != 0 {
+			if buffer.Len() > 0 {
 				messages := strings.Split(buffer.String(), "\n")
 				cnt := len(messages)
 				for i := 0; i < cnt; i++ {
@@ -69,7 +69,7 @@ func (g *GerritSSH) StartStreamEvents() {
 						buffer.Next(len(messages[i]))
 					}
 				}
-				if buffer.Len() == 0 {
+				if buffer.Len() <= 0 {
 					buffer.Reset()
 				}
 			}
