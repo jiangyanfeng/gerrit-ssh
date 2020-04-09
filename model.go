@@ -3,18 +3,18 @@ package gerritssh
 // Change - The Gerrit change being reviewed, or that was already reviewed
 // https://gerrit-review.googlesource.com/Documentation/json.html#change
 type Change struct {
-	Project       string  `json:"project,omitempty"`
-	Branch        string  `json:"branch,omitempty"`
-	Topic         string  `json:"topic,omitempty"`
-	ID            string  `json:"id,omitempty"`
-	Number        int     `json:"number,omitempty"`
-	Subject       string  `json:"subject,omitempty"`
-	Owner         Account `json:"owner,omitempty"`
-	URL           string  `json:"url,omitempty"`
-	CommitMessage string  `json:"commitMessage,omitempty"`
-	CreatedOn     int     `json:"createdOn,omitempty"`
-	LastUpdate    int     `json:"lastUpdate,omitempty"`
-	Open          bool    `json:"open,omitempty"`
+	Project       string      `json:"project,omitempty"`
+	Branch        string      `json:"branch,omitempty"`
+	Topic         string      `json:"topic,omitempty"`
+	ID            string      `json:"id,omitempty"`
+	Number        interface{} `json:"number,omitempty"`
+	Subject       string      `json:"subject,omitempty"`
+	Owner         Account     `json:"owner,omitempty"`
+	URL           string      `json:"url,omitempty"`
+	CommitMessage string      `json:"commitMessage,omitempty"`
+	CreatedOn     int         `json:"createdOn,omitempty"`
+	LastUpdate    int         `json:"lastUpdate,omitempty"`
+	Open          bool        `json:"open,omitempty"`
 
 	Status string `json:"status,omitempty"`
 	// NEW - Change is still being reviewed.
@@ -50,14 +50,14 @@ type Account struct {
 // PatchSet - Refers to a specific patchset within a change.
 // https://gerrit-review.googlesource.com/Documentation/json.html#patchSet
 type PatchSet struct {
-	Number    int      `json:"number,omitempty"`
-	Revision  string   `json:"revision,omitempty"`
-	Parents   []string `json:"parents,omitempty"`
-	Ref       string   `json:"ref,omitempty"`
-	Uploader  Account  `json:"uploader,omitempty"`
-	Author    Account  `json:"author,omitempty"`
-	CreatedOn int      `json:"createdOn,omitempty"`
-	IsDraft   bool     `json:"isDraft,omitempty"`
+	Number    interface{} `json:"number,omitempty"`
+	Revision  string      `json:"revision,omitempty"`
+	Parents   []string    `json:"parents,omitempty"`
+	Ref       string      `json:"ref,omitempty"`
+	Uploader  Account     `json:"uploader,omitempty"`
+	Author    Account     `json:"author,omitempty"`
+	CreatedOn int         `json:"createdOn,omitempty"`
+	IsDraft   bool        `json:"isDraft,omitempty"`
 
 	Kind string `json:"kind,omitempty"`
 	// REWORK - Nontrivial content changes.
@@ -119,11 +119,11 @@ type Label struct {
 // Dependency - Information about a change or patchset dependency.
 // https://gerrit-review.googlesource.com/Documentation/json.html#dependency
 type Dependency struct {
-	ID                string `json:"id,omitempty"`
-	Number            int    `json:"number,omitempty"`
-	Revision          string `json:"revision,omitempty"`
-	Ref               string `json:"ref,omitempty"`
-	IsCurrentPatchSet bool   `json:"isCurrentPatchSet,omitempty"`
+	ID                string      `json:"id,omitempty"`
+	Number            interface{} `json:"number,omitempty"`
+	Revision          string      `json:"revision,omitempty"`
+	Ref               string      `json:"ref,omitempty"`
+	IsCurrentPatchSet bool        `json:"isCurrentPatchSet,omitempty"`
 }
 
 // Message - Comment added on a change by a reviewer.

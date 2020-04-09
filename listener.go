@@ -62,6 +62,8 @@ func (g *GerritSSH) StartStreamEvents() {
 							log.Printf("Gerrit SSH: recived event: %v, message: %s", event.Type, messages[i])
 						}
 						g.ResultChan <- event
+					} else if g.Debug {
+						log.Printf("\033[0;31mGerrit SSH: decode failed: %s, message: %s\033[0m", err.Error(), messages[i])
 					}
 					if i < cnt-1 {
 						buffer.Next(len(messages[i]) + 1)
